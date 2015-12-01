@@ -1,6 +1,7 @@
-module SAT where
+module Parser
+       ( parseFile
+       ) where
 
-import System.Environment
 import System.IO
 
 type Clause = [Int]
@@ -60,8 +61,3 @@ parseFile f = do
   let init = genInitialEnv parsed
   let testEnvs = [init ++ x | x <- genTestEnvs init vars]
   return testEnvs
-
-main = do
-  args <- getArgs
-  let file = head args
-  parseFile file
