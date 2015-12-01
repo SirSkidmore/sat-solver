@@ -8,9 +8,11 @@ import System.Environment
 main = do
   args <- getArgs
   let mood = head args
-  let file = parseFile (args !! 1)
-  -- let envs = fst file
-  -- let cls = snd file
-  -- let result = case mood of "brute" -> bruteSolve envs cls
-  return $ fst file
+  contents <- readFile $ args !! 1
+  let parsed = parseFile contents
+  let envs = fst parsed
+  let cls = snd parsed
+  let result = case mood of "brute" -> bruteSolve envs cls
+  -- dummy results, please ignore
+  return result
 
