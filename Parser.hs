@@ -53,11 +53,11 @@ genTestEnvs init x =
   else genTestEnvs init (x - 1)
   where gs = genTestEnvs init (x - 1)
 
-parseFile :: String -> IO [Env]
+parseFile :: String -> IO ([Env], [Clause])
 parseFile f = do
   contents <- readFile f
   let parsed = parseLines (lines contents)
-  let vars = numVars (lines contents)
-  let init = genInitialEnv parsed
-  let testEnvs = [init ++ x | x <- genTestEnvs init vars]
-  return testEnvs
+  let testEnvs =
+        [init ++ x | x <- genTestEnvs init (numVars (lines contents))]
+        where init = genInitialEnv parsed
+  return (testEnvs, parsed)
