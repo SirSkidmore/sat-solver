@@ -1,10 +1,11 @@
-module SAT where
+module Main where
 
 import Brute
 import Parser
 
 import System.Environment
 
+main :: IO ()
 main = do
   args <- getArgs
   let mood = head args
@@ -14,5 +15,5 @@ main = do
   let cls = snd parsed
   let result = case mood of "brute" -> bruteSolve envs cls
   -- dummy results, please ignore
-  return result
+  putStrLn $ show result
 
