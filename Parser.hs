@@ -2,10 +2,9 @@ module Parser
        ( parseFile
        ) where
 
-import System.IO
+import Types
 
-type Clause = [Int]
-type Env = [(Int, Bool)]
+import System.IO
 
 numVars :: [String] -> Int
 numVars (x:xs) =
