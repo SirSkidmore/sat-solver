@@ -4,7 +4,7 @@ module Brute
 
 import Types
 
-lookupEnv :: Env -> Int -> Bool
+lookupEnv :: Env -> Int -> Interp
 lookupEnv [] n = False -- we should never hit this
 lookupEnv (x:xs) n =
   if fst x == n
