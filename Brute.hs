@@ -3,28 +3,36 @@ module Brute
        ) where
 
 import Types
+import Parser
+import Utils
 
-lookupEnv :: Env -> Int -> Interp
-lookupEnv [] n = False -- we should never hit this
-lookupEnv (x:xs) n =
-  if fst x == n
-  then snd x
-  else lookupEnv xs n
+genTestEnvs :: Env -> Int -> [Env]
+genTestEnvs init 0 = [[]]
+genTestEnvs init x =
+  if not (lookupEnv init x)
+  then [(x, True):g | g <- gs] ++ [(x, False):g | g <- gs]
+  else genTestEnvs init (x - 1)
+  where gs = genTestEnvs init (x - 1)
 
-cleanLine :: Env -> Clause -> Bool
-cleanLine env clause =
-  foldr (||) False (map (\x -> if x < 0
-                               then not $ lookupEnv env (abs x)
-                               else lookupEnv env x) clause)
+
+cleanClauses :: Env -> [Clause] -> [Clause]
+cleanClauses init clauses =
+  filter (\x -> not $ cleanLine init x) clauses
 
 checkEnv :: Env -> [Clause] -> Bool
 checkEnv env [] = True
 checkEnv env (x:xs) =
   cleanLine env x && checkEnv env xs
 
-bruteSolve :: [Env] -> [Clause] -> Env
-bruteSolve [] x = []
-bruteSolve (x:xs) clauses =
+checkEnvs :: [Env] -> [Clause] -> Env
+checkEnvs [] x = []
+checkEnvs (x:xs) clauses =
   if checkEnv x clauses
   then x
-  else bruteSolve xs clauses
+  else checkEnvs xs clauses
+
+bruteSolve :: Env -> [Clause] -> Int -> Env
+bruteSolve init clauses n =
+  let envs = [init ++ x | x <- genTestEnvs init n]
+  in checkEnvs envs clauses 
+

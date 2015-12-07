@@ -4,9 +4,8 @@ module Parser
 
 import Types
 
-import System.IO
-
 numVars :: [String] -> Int
+numVars [] = -1
 numVars (x:xs) =
   let wrds = words x
   in if (head wrds) == "p"
@@ -44,20 +43,9 @@ genInitialEnv (x:xs) =
        else (abs(head x), False):genInitialEnv xs
   else genInitialEnv xs
 
-genTestEnvs :: Env -> Int -> [Env]
-genTestEnvs init 0 = [[]]
-genTestEnvs init x =
-  if not (inEnv x init)
-  then [(x, True):g | g <- gs] ++ [(x, False):g | g <- gs]
-  else genTestEnvs init (x - 1)
-  where gs = genTestEnvs init (x - 1)
-
-parseFile :: String -> ([Env], [Clause])
+parseFile :: String -> ((Int, Env), [Clause])
 parseFile s =
   let lins = lines s
       parsed = parseLines $ lins
-      testEnvs =
-        [init ++ x | x <- genTestEnvs init (numVars lins)]
-        where init = genInitialEnv parsed
-  in (testEnvs, parsed)
+  in (((numVars lins), (genInitialEnv parsed)), parsed)
               
