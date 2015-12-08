@@ -9,15 +9,10 @@ import Utils
 genTestEnvs :: Env -> Int -> [Env]
 genTestEnvs init 0 = [[]]
 genTestEnvs init x =
-  if not (lookupEnv init x)
+  if not (isInEnv x init)
   then [(x, True):g | g <- gs] ++ [(x, False):g | g <- gs]
   else genTestEnvs init (x - 1)
   where gs = genTestEnvs init (x - 1)
-
-
-cleanClauses :: Env -> [Clause] -> [Clause]
-cleanClauses init clauses =
-  filter (\x -> not $ cleanLine init x) clauses
 
 checkEnv :: Env -> [Clause] -> Bool
 checkEnv env [] = True
