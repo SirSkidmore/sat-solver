@@ -20,7 +20,7 @@ checkEnv (x:xs) n =
 
 isInEnv :: Int -> Env -> Bool
 isInEnv n env =
-  isJust $ checkEnv env n
+  isJust $ checkEnv env (abs n)
 
 lookupEnv :: Env -> Int -> Interp
 lookupEnv env n =

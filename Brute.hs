@@ -2,8 +2,8 @@ module Brute
        ( bruteSolve
        ) where
 
-import Types
 import Parser
+import Types
 import Utils
 
 genTestEnvs :: Env -> Int -> [Env]
@@ -29,5 +29,5 @@ checkEnvs (x:xs) clauses =
 bruteSolve :: Env -> [Clause] -> Int -> Env
 bruteSolve init clauses n =
   let envs = [init ++ x | x <- genTestEnvs init n]
-  in checkEnvs envs clauses 
+  in checkEnvs envs clauses
 

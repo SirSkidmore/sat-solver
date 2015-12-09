@@ -1,6 +1,7 @@
 module Main where
 
 import Brute
+import DPLL
 import Parser
 import Types
 import Utils
@@ -24,4 +25,5 @@ main = do
   let result = case mood of "brute" -> show $ bruteSolve env cls num
                             "check" -> let testEnv = read (args !! 2) :: Env
                                        in show $ checkInterp testEnv cls
+                            "dpll" -> show $ solve cls
   putStrLn result
