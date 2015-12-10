@@ -4,7 +4,6 @@ module Heuristics.UnitProp
        ) where
 
 import Types
-import Utils
 
 import Data.Maybe
 
